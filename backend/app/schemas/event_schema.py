@@ -5,7 +5,7 @@ from enum import Enum
 from pydantic import BaseModel, Field
 
 
-class TodoCreate(BaseModel):
+class EventCreate(BaseModel):
     title: str = Field(..., title='Title', min_length=1, max_length=55)
     description: str = Field(..., title='Description', min_length=1, max_length=755)
     eventdatetime: datetime = Field(..., title='Eventdatetime')
@@ -14,7 +14,7 @@ class TodoCreate(BaseModel):
     status: Optional[bool] = False
     
     
-class TodoUpdate(BaseModel):
+class EventUpdate(BaseModel):
     title: Optional[str] = Field(..., title='Title', min_length=1, max_length=55)
     description: Optional[str] = Field(..., title='Description', min_length=1, max_length=755)
     eventdatetime: datetime = Field(..., title='Eventdatetime')
@@ -23,8 +23,8 @@ class TodoUpdate(BaseModel):
     status: Optional[bool] = False
     
 
-class TodoOut(BaseModel):
-    todo_id: UUID
+class EventOut(BaseModel):
+    event_id: UUID
     status: bool
     title: str
     description: str

@@ -65,7 +65,7 @@ function App() {
                       }
                     />
                     <Route
-                      path="/:todoId"
+                      path="/:eventId"
                       element={
                         <Authenticated>
                           <EventDetail />

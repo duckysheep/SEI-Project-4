@@ -34,7 +34,7 @@ export const AddUpdateEventModal = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const { todoId } = useParams();
+  const { eventId } = useParams();
   const {
     handleSubmit,
     register,
@@ -49,9 +49,9 @@ export const AddUpdateEventModal = ({
   const onSubmit = async (values) => {
     try {
       if (editable) {
-        await axiosInstance.put(`/todo/${todoId}`, values);
+        await axiosInstance.put(`/event/${eventId}`, values);
       } else {
-        await axiosInstance.post(`/todo/create/`, values);
+        await axiosInstance.post(`/event/create/`, values);
       }
       toast({
         title: editable ? "Event Updated" : "Event Added",

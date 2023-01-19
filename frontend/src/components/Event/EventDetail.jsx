@@ -13,26 +13,26 @@ import axiosInstance from "../../services/axios";
 import { AddUpdateEventModal } from "./AddUpdateEventModal";
 
 export const EventDetail = () => {
-  const [todo, setTodo] = useState({});
+  const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
   const isMounted = useRef(false);
-  const { todoId } = useParams();
+  const { eventId } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
   const background = useColorModeValue("gray.300", "gray.600");
 
   useEffect(() => {
     if (isMounted.current) return;
-    fetchTodo();
+    fetchEvent();
     isMounted.current = true;
-  }, [todoId]);
+  }, [eventId]);
 
-  const fetchTodo = () => {
+  const fetchEvent = () => {
     setLoading(true);
     axiosInstance
-      .get(`/todo/${todoId}`)
+      .get(`/event/${eventId}`)
       .then((res) => {
-        setTodo(res.data);
+        setEvent(res.data);
       })
       .catch((error) => console.error(error))
       .finally(() => {
@@ -40,10 +40,10 @@ export const EventDetail = () => {
       });
   };
 
-  const delateTodo = () => {
+  const deleteEvent = () => {
     setLoading(true);
     axiosInstance
-      .delete(`/todo/${todoId}`)
+      .delete(`/event/${eventId}`)
       .then(() => {
         toast({
           title: "Event deleted successfully",
@@ -100,27 +100,27 @@ export const EventDetail = () => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text fontSize={22}>{todo.title}</Text>
+        <Text fontSize={22}>{event.title}</Text>
         <Text bg="gray.500" mt={2} p={2} rounded="lg">
-          {todo.description}
+          {event.description}
         </Text>
         <AddUpdateEventModal
           my={3}
           editable={true}
           defaultValues={{
-            title: todo.title,
-            description: todo.description,
-            eventdatetim: todo.eventdatetime,
-            location: todo.location,
-            status: todo.status,
+            title: event.title,
+            description: event.description,
+            eventdatetim: event.eventdatetime,
+            location: event.location,
+            status: event.status,
           }}
-          onSuccess={fetchTodo}
+          onSuccess={fetchEvent}
         />
         <Button
           isLoading={loading}
           colorScheme="red"
           width="100%"
-          onClick={delateTodo}
+          onClick={deleteEvent}
         >
           Delete
         </Button>

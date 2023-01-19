@@ -5,8 +5,8 @@ from beanie import Document, Indexed, Link, before_event, Replace, Insert
 from pydantic import Field
 from .user_model import User
 
-class Todo(Document):
-    todo_id: UUID = Field(default_factory=uuid4, unique=True)
+class Event(Document):
+    event_id: UUID = Field(default_factory=uuid4, unique=True)
     status: bool = False
     title: Indexed(str)
     description: str = None
@@ -18,7 +18,7 @@ class Todo(Document):
     owner: Link[User]
     
     def __repr__(self) -> str:
-        return f"<Todo {self.title}>"
+        return f"<Event {self.title}>"
 
     def __str__(self) -> str:
         return self.title
@@ -27,8 +27,8 @@ class Todo(Document):
         return hash(self.title)
 
     def __eq__(self, other: object) -> bool:
-        if isinstance(other, Todo):
-            return self.todo_id == other.todo_id
+        if isinstance(other, Event):
+            return self.event_id == other.event_id
         return False
     
     @before_event([Replace, Insert])
@@ -37,4 +37,4 @@ class Todo(Document):
         
     
     class Settings:
-        name = "todos"
+        name = "events"

@@ -5,22 +5,22 @@ import { AddUpdateEventModal } from "./AddUpdateEventModal";
 import { EventCard } from "./EventCard";
 
 export const EventList = () => {
-  const [todos, setTodos] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const isMounted = useRef(false);
 
   useEffect(() => {
     if (isMounted.current) return;
-    fetchTodos();
+    fetchEvents();
     isMounted.current = true;
   }, []);
 
-  const fetchTodos = () => {
+  const fetchEvents = () => {
     setLoading(true);
     axiosInstance
-      .get("/todo/")
+      .get("/event/")
       .then((res) => {
-        setTodos(res.data);
+        setEvents(res.data);
       })
       .catch((error) => {
         console.error(error);
@@ -32,7 +32,7 @@ export const EventList = () => {
 
   return (
     <Container mt={9}>
-      <AddUpdateEventModal onSuccess={fetchTodos} />
+      <AddUpdateEventModal onSuccess={fetchEvents} />
       {loading ? (
         <Center mt={6}>
           <Spinner
@@ -45,8 +45,8 @@ export const EventList = () => {
         </Center>
       ) : (
         <Box mt={6}>
-          {todos?.map((todo) => (
-            <EventCard todo={todo} key={todo.todo_id} />
+          {events?.map((event) => (
+            <EventCard event={event} key={event.event_id} />
           ))}
         </Box>
       )}

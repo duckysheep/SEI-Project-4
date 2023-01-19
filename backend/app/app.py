@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.api.api_v1.router import router
 from app.core.config import settings
-from app.models.todo_model import Todo
+from app.models.event_model import Event
 from app.models.user_model import User
 
 app = FastAPI(
@@ -41,7 +41,7 @@ async def app_init():
         database=db_client,
         document_models= [
             User,
-            Todo
+            Event
         ]
     )
     
