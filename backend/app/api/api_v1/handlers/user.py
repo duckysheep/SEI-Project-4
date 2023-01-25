@@ -35,3 +35,5 @@ async def update_user(data: UserUpdate, user: User = Depends(get_current_user)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User does not exist"
         )
+
+   

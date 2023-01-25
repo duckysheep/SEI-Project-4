@@ -16,7 +16,6 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-// import { AuthConsumer } from "../../context/JWTAuthContext";
 
 export const FriendDetail = () => {
   const { user } = useAuth();
@@ -29,6 +28,19 @@ export const FriendDetail = () => {
   const toast = useToast();
 
   const onSubmit = async (values) => {
+    if (values.friendID != user.username) {
+      if (user.friends.includes(values.friendID)) {
+        console.log("friend already added");
+      } else {
+        console.log("add new friend");
+        user.friends.push(values.friendID);
+      }
+    } else {
+      console.log("cannot add yourself as friend");
+    }
+
+    console.log(user.friends);
+
     try {
       await console.log(values.friendID);
     } catch (error) {
@@ -36,7 +48,7 @@ export const FriendDetail = () => {
         title: "No valid Friend ID found",
         status: "error",
         isClosable: true,
-        duration: 1500,
+        duration: 1000,
       });
     }
   };
@@ -44,7 +56,7 @@ export const FriendDetail = () => {
   return (
     <>
       <Text as="h1" fontSize={36} fontWeight="bold" user={user}>
-        my ID: {user?.user_id}
+        my ID: {user?.username}
       </Text>
       <br />
       <Text as="h1" fontSize={36} fontWeight="bold">

@@ -102,7 +102,7 @@ export const EventDetail = () => {
       >
         <Text fontSize={22}>{event.title}</Text>
         <Text bg="gray.500" mt={2} p={2} rounded="lg">
-          {event.description}
+          {event.description}, {event.eventdatetime}
         </Text>
         <AddUpdateEventModal
           my={3}
@@ -110,7 +110,7 @@ export const EventDetail = () => {
           defaultValues={{
             title: event.title,
             description: event.description,
-            eventdatetim: event.eventdatetime,
+            eventdatetime: event.eventdatetime,
             location: event.location,
             status: event.status,
           }}

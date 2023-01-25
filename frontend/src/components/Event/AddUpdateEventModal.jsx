@@ -57,7 +57,7 @@ export const AddUpdateEventModal = ({
         title: editable ? "Event Updated" : "Event Added",
         status: "success",
         isClosable: true,
-        diration: 1500,
+        duration: 1000,
       });
       onSuccess();
       onClose();
@@ -67,7 +67,7 @@ export const AddUpdateEventModal = ({
         title: "Something went wrong. Please try again.",
         status: "error",
         isClosable: true,
-        diration: 1500,
+        duration: 1000,
       });
     }
   };

@@ -24,10 +24,20 @@ async def create_event(data: EventCreate, current_user: User = Depends(get_curre
 async def retrieve(event_id: UUID, current_user: User = Depends(get_current_user)):
     return await EventService.retrieve_event(current_user, event_id)
 
+# # removed owner=current_user req so anyone with link can view
+# @event_router.get('/{event_id}', summary="Get a event by event_id", response_model=EventOut)
+# async def retrieve(event_id: UUID):
+#     return await EventService.retrieve_event(event_id)
+
 
 @event_router.put('/{event_id}', summary="Update event by event_id", response_model=EventOut)
 async def update(event_id: UUID, data: EventUpdate, current_user: User = Depends(get_current_user)):
     return await EventService.update_event(current_user, event_id, data)
+
+
+@event_router.put('/participants/{event_id}', summary="Update participants by event_id", response_model=EventOut)
+async def update(event_id: UUID, data: EventUpdate, current_user: User = Depends(get_current_user)):
+    return await EventService.update_participants(current_user, event_id, data)
 
 
 @event_router.delete('/{event_id}', summary="Delete event by event_id")

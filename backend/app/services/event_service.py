@@ -20,8 +20,22 @@ class EventService:
         event = await Event.find_one(Event.event_id == event_id, Event.owner.id == current_user.id)
         return event
     
+    # # removed owner=current_user req so anyone with link can view
+    # @staticmethod
+    # async def retrieve_event(event_id: UUID):
+    #     event = await Event.find_one(Event.event_id == event_id)
+    #     return event
+    
     @staticmethod
     async def update_event(current_user: User, event_id: UUID, data: EventUpdate):
+        event = await EventService.retrieve_event(current_user, event_id)
+        await event.update({"$set": data.dict(exclude_unset=True)})
+        
+        await event.save()
+        return event
+    
+    @staticmethod
+    async def update_participants(current_user: User, event_id: UUID, data: EventUpdate):
         event = await EventService.retrieve_event(current_user, event_id)
         await event.update({"$set": data.dict(exclude_unset=True)})
         

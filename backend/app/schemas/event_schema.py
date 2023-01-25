@@ -10,6 +10,7 @@ class EventCreate(BaseModel):
     description: str = Field(..., title='Description', min_length=1, max_length=755)
     eventdatetime: datetime = Field(..., title='Eventdatetime')
     location: str = Field(..., title='Location', min_length=1, max_length=55)
+    participants: Optional[list]=None
     # joinpermission: str = Field(..., title='Joinpermission', min_length=1, max_length=755)
     status: Optional[bool] = False
     
@@ -19,6 +20,7 @@ class EventUpdate(BaseModel):
     description: Optional[str] = Field(..., title='Description', min_length=1, max_length=755)
     eventdatetime: datetime = Field(..., title='Eventdatetime')
     location: str = Field(..., title='Location', min_length=1, max_length=55)
+    participants: Optional[list]=None
     # joinpermission: str = Field(..., title='Joinpermission', min_length=1, max_length=755)
     status: Optional[bool] = False
     
@@ -30,6 +32,7 @@ class EventOut(BaseModel):
     description: str
     eventdatetime: datetime
     location: str
+    participants: Optional[list]=None
     # joinpermission: str
     created_at: datetime
     updated_at: datetime
