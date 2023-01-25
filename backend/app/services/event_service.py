@@ -2,7 +2,8 @@ from typing import List
 from uuid import UUID
 from app.models.user_model import User
 from app.models.event_model import Event
-from app.schemas.event_schema import EventCreate, EventUpdate
+from app.schemas.event_schema import EventCreate, EventUpdate,ParticipantUpdate
+from fastapi.encoders import jsonable_encoder
 
 class EventService:
     @staticmethod
@@ -20,6 +21,11 @@ class EventService:
         event = await Event.find_one(Event.event_id == event_id, Event.owner.id == current_user.id)
         return event
     
+    @staticmethod
+    async def retrieve_nonowner_event(event_id: UUID):
+        event = await Event.find_one(Event.event_id == event_id)
+        return event
+    
     # # removed owner=current_user req so anyone with link can view
     # @staticmethod
     # async def retrieve_event(event_id: UUID):
@@ -35,8 +41,8 @@ class EventService:
         return event
     
     @staticmethod
-    async def update_participants(current_user: User, event_id: UUID, data: EventUpdate):
-        event = await EventService.retrieve_event(current_user, event_id)
+    async def update_participants(event_id: UUID, data: ParticipantUpdate):
+        event = await EventService.retrieve_nonowner_event(event_id)
         await event.update({"$set": data.dict(exclude_unset=True)})
         
         await event.save()

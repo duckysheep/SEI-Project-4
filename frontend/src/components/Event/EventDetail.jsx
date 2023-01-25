@@ -11,8 +11,10 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../services/axios";
 import { AddUpdateEventModal } from "./AddUpdateEventModal";
+import { useAuth } from "../../hooks/useAuth";
 
 export const EventDetail = () => {
+  const { user } = useAuth();
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
   const isMounted = useRef(false);
@@ -65,6 +67,40 @@ export const EventDetail = () => {
       .finally(() => setLoading(false));
   };
 
+  const joinEvent = () => {
+    setLoading(true);
+    if (event.participants.includes(user.username)) {
+      console.log("Event already joined");
+      setLoading(false);
+    } else {
+      event.participants.push(user?.username);
+      console.log(event.participants);
+      axiosInstance
+        .patch(`/event/participants/${eventId}`, {
+          participants: event.participants,
+        })
+        .then(() => {
+          toast({
+            title: "Event joined successfully",
+            status: "success",
+            isClosable: true,
+            duration: 1000,
+          });
+          navigate("/");
+        })
+        .catch((err) => {
+          console.error(err);
+          toast({
+            title: "Could not join event",
+            status: "error",
+            isClosable: true,
+            duration: 1000,
+          });
+        })
+        .finally(() => setLoading(false));
+    }
+  };
+
   if (loading) {
     return (
       <Container mt={6}>
@@ -104,6 +140,8 @@ export const EventDetail = () => {
         <Text bg="gray.500" mt={2} p={2} rounded="lg">
           {event.description}, {event.eventdatetime}
         </Text>
+        Participants <br />
+        {event.participants}
         <AddUpdateEventModal
           my={3}
           editable={true}
@@ -116,6 +154,14 @@ export const EventDetail = () => {
           }}
           onSuccess={fetchEvent}
         />
+        <Button
+          isLoading={loading}
+          colorScheme="blue"
+          width="100%"
+          onClick={joinEvent}
+        >
+          Join
+        </Button>
         <Button
           isLoading={loading}
           colorScheme="red"

@@ -87,7 +87,7 @@ export const AddUpdateEventModal = ({
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent>
-            <ModalHeader>{editable ? "Update Event" : "ADD EVENT"}</ModalHeader>
+            <ModalHeader>{editable ? "UPDATE EVENT" : "ADD EVENT"}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl isInvalid={errors.title}>
