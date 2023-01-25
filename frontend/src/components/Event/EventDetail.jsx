@@ -22,6 +22,7 @@ export const EventDetail = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const background = useColorModeValue("gray.300", "gray.600");
+  const [joined, setJoined] = useState(false);
 
   useEffect(() => {
     if (isMounted.current) return;
@@ -35,6 +36,9 @@ export const EventDetail = () => {
       .get(`/event/${eventId}`)
       .then((res) => {
         setEvent(res.data);
+        if (res.data.participants.includes(user.username)) {
+          setJoined(true);
+        }
       })
       .catch((error) => console.error(error))
       .finally(() => {
@@ -69,36 +73,61 @@ export const EventDetail = () => {
 
   const joinEvent = () => {
     setLoading(true);
-    if (event.participants.includes(user.username)) {
-      console.log("Event already joined");
-      setLoading(false);
-    } else {
-      event.participants.push(user?.username);
-      console.log(event.participants);
-      axiosInstance
-        .patch(`/event/participants/${eventId}`, {
-          participants: event.participants,
-        })
-        .then(() => {
-          toast({
-            title: "Event joined successfully",
-            status: "success",
-            isClosable: true,
-            duration: 1000,
-          });
-          navigate("/");
-        })
-        .catch((err) => {
-          console.error(err);
-          toast({
-            title: "Could not join event",
-            status: "error",
-            isClosable: true,
-            duration: 1000,
-          });
-        })
-        .finally(() => setLoading(false));
+    event.participants.push(user?.username);
+    axiosInstance
+      .patch(`/event/participants/${eventId}`, {
+        participants: event.participants,
+      })
+      .then(() => {
+        toast({
+          title: "Event joined successfully",
+          status: "success",
+          isClosable: true,
+          duration: 1000,
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error(err);
+        toast({
+          title: "Could not join event",
+          status: "error",
+          isClosable: true,
+          duration: 1000,
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const unjoinEvent = () => {
+    setLoading(true);
+    const index = event.participants.indexOf(user.username);
+    if (index > -1) {
+      event.participants.splice(index, 1);
     }
+    axiosInstance
+      .patch(`/event/participants/${eventId}`, {
+        participants: event.participants,
+      })
+      .then(() => {
+        toast({
+          title: "Unjoined Event",
+          status: "success",
+          isClosable: true,
+          duration: 1000,
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error(err);
+        toast({
+          title: "Could not unjoin event",
+          status: "error",
+          isClosable: true,
+          duration: 1000,
+        });
+      })
+      .finally(() => setLoading(false));
   };
 
   if (loading) {
@@ -154,14 +183,25 @@ export const EventDetail = () => {
           }}
           onSuccess={fetchEvent}
         />
-        <Button
-          isLoading={loading}
-          colorScheme="blue"
-          width="100%"
-          onClick={joinEvent}
-        >
-          Join
-        </Button>
+        {joined === false ? (
+          <Button
+            isLoading={loading}
+            colorScheme="blue"
+            width="100%"
+            onClick={joinEvent}
+          >
+            Join
+          </Button>
+        ) : (
+          <Button
+            isLoading={loading}
+            colorScheme="red"
+            width="100%"
+            onClick={unjoinEvent}
+          >
+            Unjoin
+          </Button>
+        )}
         <Button
           isLoading={loading}
           colorScheme="red"

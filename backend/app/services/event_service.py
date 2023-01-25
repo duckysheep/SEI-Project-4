@@ -3,7 +3,6 @@ from uuid import UUID
 from app.models.user_model import User
 from app.models.event_model import Event
 from app.schemas.event_schema import EventCreate, EventUpdate,ParticipantUpdate
-from fastapi.encoders import jsonable_encoder
 
 class EventService:
     @staticmethod
@@ -23,7 +22,7 @@ class EventService:
     
     @staticmethod
     async def retrieve_nonowner_event(event_id: UUID):
-        event = await Event.find_one(Event.event_id == event_id)
+        event = await Event.find_one(Event.event_id == event_id,fetch_links=True)
         return event
     
     # # removed owner=current_user req so anyone with link can view
