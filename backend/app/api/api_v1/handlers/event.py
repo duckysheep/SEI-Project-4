@@ -14,6 +14,10 @@ event_router = APIRouter()
 async def list(current_user: User = Depends(get_current_user)):
     return await EventService.list_events(current_user)
 
+@event_router.get('/joined', summary="Get all joined events of the user", response_model=List[EventOut])
+async def list(current_user: User = Depends(get_current_user)):
+    return await EventService.list_joined_events(current_user)
+
 
 @event_router.post('/create', summary="Create Events", response_model=Event)
 async def create_event(data: EventCreate, current_user: User = Depends(get_current_user)):

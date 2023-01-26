@@ -2,8 +2,11 @@ import {
   Button,
   Center,
   Container,
+  ListIcon,
+  ListItem,
   Spinner,
   Text,
+  UnorderedList,
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
@@ -169,8 +172,22 @@ export const EventDetail = () => {
         <Text bg="gray.500" mt={2} p={2} rounded="lg">
           {event.description}, {event.eventdatetime}
         </Text>
-        Participants <br />
-        {event.participants}
+        <br />
+        <Text fontSize={16} as="b">
+          Participants:
+        </Text>
+        <br />
+        {event.participants.length === 0 ? (
+          "No participants found :("
+        ) : (
+          <UnorderedList>
+            {event.participants?.map((participants) => (
+              <ListItem>{participants}</ListItem>
+            ))}
+          </UnorderedList>
+        )}
+
+        {/* {event.participants} */}
         <AddUpdateEventModal
           my={3}
           editable={true}
@@ -180,9 +197,20 @@ export const EventDetail = () => {
             eventdatetime: event.eventdatetime,
             location: event.location,
             status: event.status,
+            owner: event.owner.username,
           }}
           onSuccess={fetchEvent}
         />
+        {event.owner.username === user.username && (
+          <Button
+            isLoading={loading}
+            colorScheme="red"
+            width="100%"
+            onClick={deleteEvent}
+          >
+            Delete
+          </Button>
+        )}
         {joined === false ? (
           <Button
             isLoading={loading}
@@ -202,14 +230,6 @@ export const EventDetail = () => {
             Unjoin
           </Button>
         )}
-        <Button
-          isLoading={loading}
-          colorScheme="red"
-          width="100%"
-          onClick={deleteEvent}
-        >
-          Delete
-        </Button>
       </Container>
     </>
   );

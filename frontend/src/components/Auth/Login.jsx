@@ -97,7 +97,7 @@ export const Login = () => {
           variant="outline"
           mt={6}
         >
-          Register Instead
+          Register
         </Button>
       </Flex>
     </Flex>

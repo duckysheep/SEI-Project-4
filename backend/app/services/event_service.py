@@ -9,6 +9,11 @@ class EventService:
     async def list_events(user: User) -> List[Event]:
         events = await Event.find(Event.owner.id == user.id).to_list()
         return events
+
+    @staticmethod
+    async def list_joined_events(user: User) -> List[Event]:
+        events = await Event.find({"participants" : user.username}).to_list()
+        return events
     
     @staticmethod
     async def create_event(user: User, data: EventCreate) -> Event:
