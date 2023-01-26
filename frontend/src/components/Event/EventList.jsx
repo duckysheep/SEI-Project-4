@@ -69,9 +69,18 @@ export const EventList = () => {
         </Box>
       )}
       <hr />
-      <Text as="h2" fontSize={24} fontWeight="bold">
-        Joined Events
-      </Text>
+      <Center>
+        <Text as="h2" fontSize={24} fontWeight="bold">
+          Joined Events
+        </Text>
+      </Center>
+      <Center>
+        {joinedEvents.length === 0 && (
+          <Text as="h2" fontSize={20}>
+            No events joined
+          </Text>
+        )}
+      </Center>
       <JoinedEventsModal onSuccess={fetchJoinedEvents} />
       {loading ? (
         <Center mt={6}>

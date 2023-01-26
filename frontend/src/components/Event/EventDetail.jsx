@@ -5,6 +5,7 @@ import {
   ListIcon,
   ListItem,
   Spinner,
+  Stack,
   Text,
   UnorderedList,
   useColorModeValue,
@@ -201,35 +202,37 @@ export const EventDetail = () => {
           }}
           onSuccess={fetchEvent}
         />
-        {event.owner.username === user.username && (
-          <Button
-            isLoading={loading}
-            colorScheme="red"
-            width="100%"
-            onClick={deleteEvent}
-          >
-            Delete
-          </Button>
-        )}
-        {joined === false ? (
-          <Button
-            isLoading={loading}
-            colorScheme="blue"
-            width="100%"
-            onClick={joinEvent}
-          >
-            Join
-          </Button>
-        ) : (
-          <Button
-            isLoading={loading}
-            colorScheme="red"
-            width="100%"
-            onClick={unjoinEvent}
-          >
-            Unjoin
-          </Button>
-        )}
+        <Stack spacing={3} direction="column" align="center">
+          {event.owner.username === user.username && (
+            <Button
+              isLoading={loading}
+              colorScheme="red"
+              width="100%"
+              onClick={deleteEvent}
+            >
+              Delete
+            </Button>
+          )}
+          {joined === false ? (
+            <Button
+              isLoading={loading}
+              colorScheme="blue"
+              width="100%"
+              onClick={joinEvent}
+            >
+              Join
+            </Button>
+          ) : (
+            <Button
+              isLoading={loading}
+              colorScheme="red"
+              width="100%"
+              onClick={unjoinEvent}
+            >
+              Unjoin
+            </Button>
+          )}
+        </Stack>
       </Container>
     </>
   );

@@ -29,11 +29,11 @@ export const NavBar = () => {
           </Text>
         </Link>
         <Stack direction="row" align="center" spacing={4}>
-          <Link to="/friends">
+          {/* <Link to="/friends">
             <Text as="h2" fontSize={24} fontWeight="bold">
               Friends
             </Text>
-          </Link>
+          </Link> */}
           <ThemeToggler size="lg" />
           <Button onClick={logout} colorScheme="green">
             Logout

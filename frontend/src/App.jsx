@@ -72,14 +72,14 @@ function App() {
                         </Authenticated>
                       }
                     />
-                    <Route
+                    {/* <Route
                       path="/friends"
                       element={
                         <Authenticated>
                           <FriendDetail />
                         </Authenticated>
                       }
-                    />
+                    /> */}
                   </Route>
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
